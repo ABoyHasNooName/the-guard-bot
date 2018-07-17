@@ -3,17 +3,46 @@
 const config = require('../config');
 const eq = require('./eq');
 
-const masterById = /^\d+$/.test(config.master);
-const masterByUsername = /^@?\w+$/.test(config.master);
+const masterIdRegex = /^\d+$/;
+const masterUsernameRegex = /^@?\w+$/;
 
-if (!masterById && !masterByUsername) {
+const stringOrNumber = x =>
+	[ 'string', 'number' ].includes(typeof x);
+
+const masterById = value =>
+	stringOrNumber(value) &&
+	masterIdRegex.test(value);
+
+const masterByUsername = value =>
+	stringOrNumber(value) &&
+	masterUsernameRegex.test(value);
+
+const masterArray = list =>
+	Array.isArray(list) &&
+		list.every(value =>
+			masterById(value) ||
+			masterByUsername(value));
+
+if (
+	!masterById(config.master) &&
+	!masterByUsername(config.master) &&
+	!masterArray(config.master)
+) {
 	throw new Error('Invalid value for `master` in config file: ' +
 		config.master);
 }
 
-const isMaster = masterById
-	? user => user.id === Number(config.master)
-	: user => user.username && eq.username(user.username, config.master);
+const ensureArray = value =>
+	Array.isArray(value)
+		? value
+		: [ value ];
+
+const isMaster = user =>
+	ensureArray(config.master).some(value =>
+		Number(value) === user.id ||
+			user.username &&
+				masterByUsername(value) &&
+				eq.username(user.username, value));
 
 module.exports = {
 	isMaster,
