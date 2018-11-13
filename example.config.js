@@ -24,7 +24,7 @@ module.exports = {
 	 * @type {!string}
 	 * Telegram Bot token obtained from https://t.me/BotFather.
 	 */
-	token: '',
+	token: '620631715:AAEmn2gkUowokvnFuLqoBvLnb-UXxulSjKM',
 
 
 	/**
@@ -32,7 +32,7 @@ module.exports = {
 	 * Which messages with commands should be deleted?
 	 * Defaults to 'own' -- don't delete commands meant for other bots.
 	 */
-	deleteCommands: 'own',
+	deleteCommands: 'all',
 
 	/**
 	 * @type {( number | string | false )}
@@ -42,7 +42,7 @@ module.exports = {
 	 * Pass 0 to remove immediately.
 	 * Pass false to never remove.
 	 */
-	deleteJoinsAfter: '2 minutes',
+	deleteJoinsAfter: '0',
 
 	/**
 	 * @type {string[]}
